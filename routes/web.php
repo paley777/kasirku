@@ -10,6 +10,7 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::resource('/dashboard/goods', GoodController::class)->middleware('auth');
 Route::resource('/dashboard/users', UserController::class)->middleware('auth');
+Route::resource('/dashboard/customers', CustomerController::class)->middleware('auth');
 Route::resource('/dashboard/categories', CategoryController::class)->middleware('auth');
 Route::resource('/dashboard/transactions', TransactionController::class)->middleware('auth');
 
@@ -46,7 +48,6 @@ Route::get('/dashboard/cashier', [CashierController::class, 'index'])->middlewar
 Route::get('/dashboard/cashier/create', [CashierController::class, 'createtransaction'])->middleware('auth');
 //SAVE TRANSACTION
 Route::post('/dashboard/cashier/create', [CashierController::class, 'storetransaction'])->middleware('auth');
-
 
 //CASHIER CREATE ORDERS
 Route::post('/dashboard/cashier/createorder', [CashierController::class, 'createorder'])->middleware('auth');
