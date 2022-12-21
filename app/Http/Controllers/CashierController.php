@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Good;
 use App\Models\Transaction;
 use App\Models\Order;
+use App\Models\Customer;
 use PDF;
 
 class CashierController extends Controller
@@ -34,6 +35,7 @@ class CashierController extends Controller
         return view('dashboard.cashiers.transaction.create', [
             'active' => 'cashier',
             'users' => User::all(),
+            'customers' => Customer::all(),
         ]);
     }
     /**

@@ -343,7 +343,7 @@
                             <th scope="col">Status</th>
                             <th scope="col">Total</th>
                             <th scope="col">Bayar</th>
-                            <th scope="col">Kembalian</th>
+                            <th scope="col">Sisa Bayar</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

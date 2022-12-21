@@ -389,7 +389,7 @@
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="nama_pembeli" required
-                                placeholder="Masukkan Nama Pembeli...">
+                                placeholder="Masukkan Nama Pembeli..." value="<?php echo e($transaction->nama_pembeli); ?>" readonly>
                         </div>
                     </div>
                     <hr>
@@ -401,7 +401,7 @@
                             <select class="form-select" name="status">
                                 <option value="LUNAS">LUNAS
                                 </option>
-                                <option value="BELUM BAYAR">BELUM BAYAR
+                                <option value="BELUM BAYAR">BELUM LUNAS
                                 </option>
                             </select>
                         </div>
@@ -419,7 +419,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Bayar (Apabila Belum Bayar kosongkan)</p>
+                            <p class="mb-0">Bayar</p>
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bayar" name="bayar"
@@ -430,7 +430,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Kembalian (Apabila Belum Bayar kosongkan)</p>
+                            <p class="mb-0">Sisa Pembayaran</p>
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="kembalian" name="kembalian"

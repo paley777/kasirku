@@ -356,7 +356,7 @@
                             <th scope="col">Status</th>
                             <th scope="col">Total</th>
                             <th scope="col">Bayar</th>
-                            <th scope="col">Kembalian</th>
+                            <th scope="col">Sisa Bayar</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -375,7 +375,7 @@
                                 <td><?php echo e($transaction->kembalian); ?></td>
                                 <td>
                                     <a href="/dashboard/transactions/<?php echo e($transaction->id); ?>/edit"
-                                        class="badge bg-warning border-0">Edit Transaksi</a>
+                                        class="badge bg-warning border-0">Pembayaran</a>
 
                                     <form action="/dashboard/transactions/<?php echo e($transaction->id); ?>" method="post"
                                         class="d-inline">
@@ -390,7 +390,7 @@
                                         <?php echo csrf_field(); ?>
                                         <input type="hidden" class="form-control" name="no_nota" required
                                             value="<?php echo e($transaction->no_nota); ?>">
-                                        <button class="badge bg-primary border-0">Lihat Pesanan</button>
+                                        <button class="badge bg-primary border-0">Edit Pesanan</button>
                                     </form>
                                     <form method="post" action="/dashboard/cashiers/nota">
                                         <?php echo csrf_field(); ?>
