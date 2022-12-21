@@ -347,7 +347,8 @@
                             <p class="mb-0">Tanggal Transaksi</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" name="tgl_transaksi" value="<?php echo date('Y-m-d'); ?>" readonly>
+                            <input type="date" class="form-control" name="tgl_transaksi" value="<?php echo date('Y-m-d'); ?>"
+                                readonly>
                         </div>
                     </div>
                     <hr>
@@ -375,8 +376,12 @@
                             <p class="mb-0">Nama Pembeli</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nama_pembeli" required
-                                placeholder="Masukkan Nama Pembeli...">
+                            <select class="form-select" name="nama_pembeli">
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->nama }}">{{ $customer->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <hr>

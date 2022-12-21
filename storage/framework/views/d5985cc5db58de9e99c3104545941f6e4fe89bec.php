@@ -348,7 +348,8 @@
                             <p class="mb-0">Tanggal Transaksi</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" name="tgl_transaksi" value="<?php echo date('Y-m-d'); ?>" readonly>
+                            <input type="date" class="form-control" name="tgl_transaksi" value="<?php echo date('Y-m-d'); ?>"
+                                readonly>
                         </div>
                     </div>
                     <hr>
@@ -378,8 +379,13 @@
                             <p class="mb-0">Nama Pembeli</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nama_pembeli" required
-                                placeholder="Masukkan Nama Pembeli...">
+                            <select class="form-select" name="nama_pembeli">
+                                <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($customer->nama); ?>"><?php echo e($customer->nama); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
                         </div>
                     </div>
                     <hr>

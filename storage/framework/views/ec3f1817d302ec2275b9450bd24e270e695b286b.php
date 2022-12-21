@@ -394,7 +394,7 @@
                             <select class="form-select" name="status">
                                 <option value="LUNAS">LUNAS
                                 </option>
-                                <option value="BELUM BAYAR">BELUM BAYAR
+                                <option value="BELUM BAYAR">BELUM LUNAS
                                 </option>
                             </select>
                         </div>
@@ -406,17 +406,17 @@
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bayar" name="bayar"
-                                placeholder="Masukkan Nama Pembeli..." value="0" onchange="Kembalian()">
+                                placeholder="Masukkan Jumlah..." value="<?php echo e($total_harga); ?>" onchange="Kembalian()">
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">Kembalian (Apabila Belum Bayar kosongkan)</p>
+                            <p class="mb-0">Sisa Pembayaran</p>
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="kembalian" name="kembalian"
-                                placeholder="Masukkan Nama Pembeli..." value="0" readonly>
+                                placeholder="Masukkan Sisa..." value="0" readonly>
                         </div>
                     </div>
                     <hr>

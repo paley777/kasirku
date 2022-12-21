@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use Illuminate\Http\Request;
+use App\Models\Customer;
 
 class TransactionController extends Controller
 {
@@ -70,6 +71,7 @@ class TransactionController extends Controller
         return view('dashboard.transactions.edit', [
             'users' => User::all(),
             'transaction' => $transaction,
+            'customers' => Customer::all(),
             'active' => 'data',
         ]);
     }
@@ -106,7 +108,7 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction, Request $request)
     {
         Transaction::destroy($transaction->id);
-        Order::where('no_nota',$request->no_nota)->delete();
+        Order::where('no_nota', $request->no_nota)->delete();
 
         return redirect('/dashboard/transactions')->with('success', 'Transaksi telah dihapus.');
     }
