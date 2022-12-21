@@ -330,7 +330,6 @@
             <div class="card-body">
                 <form method="post" action="/dashboard/cashiers/finishing">
                     @csrf
-
                     <input type="hidden" class="form-control" name="id" required placeholder="Masukkan Nama Kategori..."
                         value="{{ $transaction->id }}" readonly>
 
@@ -420,8 +419,7 @@
                         </div>
                     </div>
                     <hr>
-                    <a target="_blank" class="btn btn-primary" type="submit">Selesai</a>
-             
+                    <button class="btn btn-primary" type="submit">Selesai!</button>
                 </form>
             </div>
         </div>

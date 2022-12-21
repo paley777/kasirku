@@ -336,7 +336,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nomor Nota</th>
-                            <th scope="col">Tanggal Transaksi</th>
+                            <th scope="col">Waktu Transaksi</th>
                             <th scope="col">Nama Petugas</th>
                             <th scope="col">Nama Pembeli</th>
                             <th scope="col">Status</th>
@@ -352,7 +352,7 @@
                             @foreach ($transactions as $transaction)
                                 <td>{{ $a++ }}</td>
                                 <td>{{ $transaction->no_nota }}</td>
-                                <td>{{ $transaction->tgl_transaksi }}</td>
+                                <td>{{ $transaction->created_at }}</td>
                                 <td>{{ $transaction->user->nama }}</td>
                                 <td>{{ $transaction->nama_pembeli }}</td>
                                 <td>{{ $transaction->status }}</td>

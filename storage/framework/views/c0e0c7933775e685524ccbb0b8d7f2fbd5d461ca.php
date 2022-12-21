@@ -1,6 +1,6 @@
-@extends('dashboard.layouts.main')
 
-@section('container')
+
+<?php $__env->startSection('container'); ?>
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -313,98 +313,145 @@
         }
     </style>
     <div class="container mt-3">
-        @if (session()->has('success'))
+        <?php if(session()->has('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        <?php endif; ?>
         <div class="card">
             <div class="row">
                 <div class="col-3">
                     <div class="card-header">
-                        Manajemen Data Transaksi
+                        Edit Data Transaksi
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <div class="container mt-3">
+                <form method="post" action="/dashboard/transactions/<?php echo e($transaction->id); ?>">
+                    <?php echo method_field('put'); ?>
+                    <?php echo csrf_field(); ?>
                     <div class="row">
-                        <div class="col">
-                            <div>
-                                <p>Cari berdasarkan Nama Pembeli</p>
-                            </div>
+                        <div class="col-sm-3">
+                            <p class="mb-0">ID.</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" required
+                                placeholder="Masukkan Nama Kategori..." value="<?php echo e($transaction->id); ?>" readonly>
                         </div>
                     </div>
-                    <form action="/dashboard/categories">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Cari..." name="search"
-                                value="{{ request('search') }}">
-                            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">No Nota</p>
                         </div>
-                    </form>
-                </div>
-                <table class="table table-light">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nomor Nota</th>
-                            <th scope="col">Waktu Transaksi</th>
-                            <th scope="col">Nama Petugas</th>
-                            <th scope="col">Nama Pembeli</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Bayar</th>
-                            <th scope="col">Kembalian</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="no_nota" required
+                                placeholder="Masukkan Nama Kategori..." value="<?php echo e($transaction->no_nota); ?>" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Tanggal Transaksi</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" name="tgl_transaksi"
+                                value="<?php echo e($transaction->tgl_transaksi); ?>" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Nama Administrator</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <select class="form-select" name="user_id">
+                                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if(old('user_id') == $user->id): ?>
+                                        <option value="<?php echo e($user->id); ?>" selected><?php echo e($user->nama); ?>
 
-                            @foreach ($transactions as $key => $transaction)
-                                <td>{{ $transactions->firstItem() + $key }}</td>
-                                <td>{{ $transaction->no_nota }}</td>
-                                <td>{{ $transaction->created_at }}</td>
-                                <td>{{ $transaction->user->nama }}</td>
-                                <td>{{ $transaction->nama_pembeli }}</td>
-                                <td>{{ $transaction->status }}</td>
-                                <td>{{ $transaction->total_harga }}</td>
-                                <td>{{ $transaction->bayar }}</td>
-                                <td>{{ $transaction->kembalian }}</td>
-                                <td>
-                                    <a href="/dashboard/transactions/{{ $transaction->id }}/edit"
-                                        class="badge bg-warning border-0">Edit Transaksi</a>
+                                        </option>
+                                    <?php else: ?>
+                                        <option value="<?php echo e($user->id); ?>"><?php echo e($user->nama); ?>
 
-                                    <form action="/dashboard/transactions/{{ $transaction->id }}" method="post"
-                                        class="d-inline">
-                                        @method('delete')
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-danger border-0"
-                                            onclick="return confirm('Hapus Data?')">Hapus</button>
-                                    </form>
-                                    <form action="/dashboard/orders" method="post" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0">Lihat Pesanan</button>
-                                    </form>
-                                    <form method="post" action="/dashboard/cashiers/nota">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0" type="submit">Unduh Nota</button>
-                                    </form>
-                                </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center">
-                    {{ $transactions->links() }} </div>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Nama Pembeli</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="nama_pembeli" required
+                                placeholder="Masukkan Nama Pembeli...">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Status</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <select class="form-select" name="status">
+                                <option value="LUNAS">LUNAS
+                                </option>
+                                <option value="BELUM BAYAR">BELUM BAYAR
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Total Harga</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="total_harga" id="total" required
+                                value="<?php echo e($transaction->total_harga); ?>" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Bayar (Apabila Belum Bayar kosongkan)</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="bayar" name="bayar"
+                                placeholder="Masukkan Nama Pembeli..." value="<?php echo e($transaction->bayar); ?>"
+                                onchange="Kembalian()">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Kembalian (Apabila Belum Bayar kosongkan)</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="kembalian" name="kembalian"
+                                placeholder="Masukkan Nama Pembeli..." value="<?php echo e($transaction->kembalian); ?>" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn btn-primary" type="submit">Ubah Transaksi</button>
+                </form>
             </div>
         </div>
     </div>
-@endsection
+    <script>
+        function Kembalian() {
+            var bayar = document.getElementById("bayar").value;
+            var total = document.getElementById("total").value;
+
+            var kembalian = bayar - total;
+            document.getElementById("kembalian").value = kembalian;
+        }
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('dashboard.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasirku\resources\views/dashboard/transactions/edit.blade.php ENDPATH**/ ?>

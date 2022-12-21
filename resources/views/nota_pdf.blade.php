@@ -19,7 +19,7 @@
     <table class="table table-light">
         <thead>
             <tr>
-                <th scope="col-1">Tgl Transaksi</th>
+                <th scope="col-1">Waktu Transaksi</th>
                 <th scope="col-2">Nama Petugas</th>
                 <th scope="col-2">Nama Pembeli</th>
                 <th scope="col-1">Status</th>
@@ -31,7 +31,7 @@
         <tbody>
             <tr>
 
-                <td>{{ $transaction->tgl_transaksi }}</td>
+                <td>{{ $transaction->created_at }}</td>
                 <td>{{ $transaction->user->nama }}</td>
                 <td>{{ $transaction->nama_pembeli }}</td>
                 <td>{{ $transaction->status }}</td>

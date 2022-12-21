@@ -331,7 +331,6 @@
             <div class="card-body">
                 <form method="post" action="/dashboard/cashiers/finishing">
                     <?php echo csrf_field(); ?>
-
                     <input type="hidden" class="form-control" name="id" required placeholder="Masukkan Nama Kategori..."
                         value="<?php echo e($transaction->id); ?>" readonly>
 
@@ -421,7 +420,7 @@
                         </div>
                     </div>
                     <hr>
-                    <button class="btn btn-primary" type="submit">Selesaikan</button>
+                    <button class="btn btn-primary" type="submit">Selesai!</button>
                 </form>
             </div>
         </div>

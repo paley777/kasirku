@@ -20,7 +20,7 @@
         <thead>
             <tr>
                 <th scope="col">No. Nota</th>
-                <th scope="col">Tgl Transaksi</th>
+                <th scope="col">Waktu Transaksi</th>
                 <th scope="col">Nama Petugas</th>
                 <th scope="col">Nama Pembeli</th>
                 <th scope="col">Status</th>
@@ -33,7 +33,7 @@
             <tr>
             
                 <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <td><?php echo e($transaction->tgl_transaksi); ?></td>
+                    <td><?php echo e($transaction->created_at); ?></td>
                     <td><?php echo e($transaction->user->nama); ?></td>
                     <td><?php echo e($transaction->nama_pembeli); ?></td>
                     <td><?php echo e($transaction->status); ?></td>

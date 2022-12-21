@@ -1,6 +1,6 @@
-@extends('dashboard.layouts.main')
 
-@section('container')
+
+<?php $__env->startSection('container'); ?>
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -313,18 +313,22 @@
         }
     </style>
     <div class="container mt-3">
-        @if (session()->has('success'))
+        <?php if(session()->has('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        <?php endif; ?>
         <div class="card">
             <div class="row">
                 <div class="col-3">
                     <div class="card-header">
-                        Manajemen Data Transaksi
+                        Manajemen Data Kategori Barang
                     </div>
+                </div>
+                <div class="col-9 d-flex align-items-center flex-row-reverse px-4">
+                    <a href="/dashboard/categories/create" class="btn btn-sm btn-primary">+Tambah Kategori</a>
                 </div>
             </div>
             <div class="card-body">
@@ -332,14 +336,14 @@
                     <div class="row">
                         <div class="col">
                             <div>
-                                <p>Cari berdasarkan Nama Pembeli</p>
+                                <p>Cari berdasarkan Nama Kategori</p>
                             </div>
                         </div>
                     </div>
                     <form action="/dashboard/categories">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Cari..." name="search"
-                                value="{{ request('search') }}">
+                                value="<?php echo e(request('search')); ?>">
                             <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
@@ -348,63 +352,36 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Nomor Nota</th>
-                            <th scope="col">Waktu Transaksi</th>
-                            <th scope="col">Nama Petugas</th>
-                            <th scope="col">Nama Pembeli</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Bayar</th>
-                            <th scope="col">Kembalian</th>
+                            <th scope="col">Nama Kategori</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-
-                            @foreach ($transactions as $key => $transaction)
-                                <td>{{ $transactions->firstItem() + $key }}</td>
-                                <td>{{ $transaction->no_nota }}</td>
-                                <td>{{ $transaction->created_at }}</td>
-                                <td>{{ $transaction->user->nama }}</td>
-                                <td>{{ $transaction->nama_pembeli }}</td>
-                                <td>{{ $transaction->status }}</td>
-                                <td>{{ $transaction->total_harga }}</td>
-                                <td>{{ $transaction->bayar }}</td>
-                                <td>{{ $transaction->kembalian }}</td>
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <td><?php echo e($categories->firstItem() + $key); ?></td>
+                                <td><?php echo e($category->nama); ?></td>
                                 <td>
-                                    <a href="/dashboard/transactions/{{ $transaction->id }}/edit"
-                                        class="badge bg-warning border-0">Edit Transaksi</a>
+                                    <a href="/dashboard/categories/<?php echo e($category->id); ?>/edit"
+                                        class="badge bg-warning border-0">Edit</a>
 
-                                    <form action="/dashboard/transactions/{{ $transaction->id }}" method="post"
+                                    <form action="/dashboard/categories/<?php echo e($category->id); ?>" method="post"
                                         class="d-inline">
-                                        @method('delete')
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
+                                        <?php echo method_field('delete'); ?>
+                                        <?php echo csrf_field(); ?>
                                         <button class="badge bg-danger border-0"
                                             onclick="return confirm('Hapus Data?')">Hapus</button>
                                     </form>
-                                    <form action="/dashboard/orders" method="post" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0">Lihat Pesanan</button>
-                                    </form>
-                                    <form method="post" action="/dashboard/cashiers/nota">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0" type="submit">Unduh Nota</button>
-                                    </form>
                                 </td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                    {{ $transactions->links() }} </div>
+                    <?php echo e($categories->links()); ?> </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('dashboard.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasirku\resources\views/dashboard/categories/index.blade.php ENDPATH**/ ?>

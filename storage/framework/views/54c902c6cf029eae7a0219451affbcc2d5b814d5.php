@@ -1,6 +1,6 @@
-@extends('dashboard.layouts.main')
 
-@section('container')
+
+<?php $__env->startSection('container'); ?>
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -313,98 +313,85 @@
         }
     </style>
     <div class="container mt-3">
-        @if (session()->has('success'))
+        <?php if(session()->has('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        <?php endif; ?>
         <div class="card">
             <div class="row">
                 <div class="col-3">
                     <div class="card-header">
-                        Manajemen Data Transaksi
+                        Input Data Pesanan
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <div class="container mt-3">
+                <form method="post" action="/dashboard/orders/store">
+                    <?php echo csrf_field(); ?>
                     <div class="row">
-                        <div class="col">
-                            <div>
-                                <p>Cari berdasarkan Nama Pembeli</p>
-                            </div>
+                        <div class="col-sm-3">
+                            <p class="mb-0">No Nota</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="no_nota" required
+                                 value="<?php echo e($no_nota); ?>" readonly>
                         </div>
                     </div>
-                    <form action="/dashboard/categories">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Cari..." name="search"
-                                value="{{ request('search') }}">
-                            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Pesan Barang</p>
                         </div>
-                    </form>
-                </div>
-                <table class="table table-light">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nomor Nota</th>
-                            <th scope="col">Waktu Transaksi</th>
-                            <th scope="col">Nama Petugas</th>
-                            <th scope="col">Nama Pembeli</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Bayar</th>
-                            <th scope="col">Kembalian</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                        <div class="col-sm-9">
+                            <select class="form-select" id="goods" name="good_id">
+                                <?php $__currentLoopData = $goods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $good): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option price="<?php echo e($good->harga); ?>" value="<?php echo e($good->id); ?>" selected>
+                                        <?php $nama = $good->nama;
+                                        echo $nama; ?> | Ada
+                                        :<?php echo e($good->stok); ?> | Harga <?php echo e($good->harga); ?>
 
-                            @foreach ($transactions as $key => $transaction)
-                                <td>{{ $transactions->firstItem() + $key }}</td>
-                                <td>{{ $transaction->no_nota }}</td>
-                                <td>{{ $transaction->created_at }}</td>
-                                <td>{{ $transaction->user->nama }}</td>
-                                <td>{{ $transaction->nama_pembeli }}</td>
-                                <td>{{ $transaction->status }}</td>
-                                <td>{{ $transaction->total_harga }}</td>
-                                <td>{{ $transaction->bayar }}</td>
-                                <td>{{ $transaction->kembalian }}</td>
-                                <td>
-                                    <a href="/dashboard/transactions/{{ $transaction->id }}/edit"
-                                        class="badge bg-warning border-0">Edit Transaksi</a>
-
-                                    <form action="/dashboard/transactions/{{ $transaction->id }}" method="post"
-                                        class="d-inline">
-                                        @method('delete')
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-danger border-0"
-                                            onclick="return confirm('Hapus Data?')">Hapus</button>
-                                    </form>
-                                    <form action="/dashboard/orders" method="post" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0">Lihat Pesanan</button>
-                                    </form>
-                                    <form method="post" action="/dashboard/cashiers/nota">
-                                        @csrf
-                                        <input type="hidden" class="form-control" name="no_nota" required
-                                            value="{{ $transaction->no_nota }}">
-                                        <button class="badge bg-primary border-0" type="submit">Unduh Nota</button>
-                                    </form>
-                                </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center">
-                    {{ $transactions->links() }} </div>
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Jumlah Pesan</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="qty" id="qty" required
+                                placeholder="Masukkan Jumlah Pembelian..." onchange="Subtotal()">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Subtotal</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="subtotal" name="subtotal" required readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn btn-primary" type="submit">Tambahkan Pesanan</button>
+                </form>
             </div>
         </div>
     </div>
-@endsection
+    <script>
+        function Subtotal() {
+            var databarang = document.querySelector("#goods");
+            var harga = databarang.options[databarang.selectedIndex].getAttribute('price');
+            var qty = document.querySelector("#qty").value;
+            var hasil = harga * qty;
+            document.getElementById("subtotal").value = hasil;
+        }
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('dashboard.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasirku\resources\views/dashboard/orders/create.blade.php ENDPATH**/ ?>
