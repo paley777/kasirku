@@ -15,7 +15,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.customers.index', [
+            'active' => 'data',
+            'customers' => Customer::latest()
+                ->filter(request(['search']))
+                ->paginate(10)
+                ->withQueryString(),
+        ]);
     }
 
     /**
@@ -25,7 +31,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.customers.create', [
+            'active' => 'data',
+        ]);
     }
 
     /**
@@ -36,7 +44,14 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'no_tlp' => 'required',
+            'alamat' => 'required',
+        ]);
+        Customer::create($validatedData);
+
+        return redirect('/dashboard/customers')->with('success', 'Pelanggan telah ditambahkan.');
     }
 
     /**
@@ -58,7 +73,10 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view('dashboard.customers.edit', [
+            'customer' => $customer,
+            'active' => 'data',
+        ]);
     }
 
     /**
@@ -70,7 +88,16 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $rules = [
+            'id' => 'required',
+            'nama' => 'required',
+            'no_tlp' => 'required',
+            'alamat' => 'required',
+        ];
+        $validatedData = $request->validate($rules);
+        Customer::where('id', $validatedData['id'])->update($validatedData);
+
+        return redirect('/dashboard/customers')->with('success', 'Pelanggan telah diubah.');
     }
 
     /**
@@ -81,6 +108,8 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        Customer::destroy($customer->id);
+
+        return redirect('/dashboard/customers')->with('success', 'Pelanggan telah dihapus.');
     }
 }
