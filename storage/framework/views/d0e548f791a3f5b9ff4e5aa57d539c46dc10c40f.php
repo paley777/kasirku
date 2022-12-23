@@ -363,9 +363,6 @@
                                 <td><?php echo e($order->qty); ?></td>
                                 <td><?php echo e($order->subtotal); ?></td>
                                 <td>
-                                    <a href="/dashboard/orders/<?php echo e($order->id); ?>/edit"
-                                        class="badge bg-warning border-0">Edit</a>
-
                                     <form action="/dashboard/orders/<?php echo e($order->id); ?>" method="post"
                                         class="d-inline">
                                         <?php echo method_field('delete'); ?>

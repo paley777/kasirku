@@ -346,7 +346,7 @@
                             <p class="mb-0">E-mail</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="email" placeholder="Masukkan E-mail..."
+                            <input type="email" class="form-control" name="email" placeholder="Masukkan E-mail..."
                                 required>
                         </div>
                     </div>

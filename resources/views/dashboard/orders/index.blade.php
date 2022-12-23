@@ -361,9 +361,6 @@
                                 <td>{{ $order->qty }}</td>
                                 <td>{{ $order->subtotal }}</td>
                                 <td>
-                                    <a href="/dashboard/orders/{{ $order->id }}/edit"
-                                        class="badge bg-warning border-0">Edit</a>
-
                                     <form action="/dashboard/orders/{{ $order->id }}" method="post"
                                         class="d-inline">
                                         @method('delete')

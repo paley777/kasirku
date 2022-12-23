@@ -336,8 +336,8 @@
                             <p class="mb-0">No Nota</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="no_nota" required
-                                 value="<?php echo e($no_nota); ?>" readonly>
+                            <input type="text" class="form-control" name="no_nota" required value="<?php echo e($no_nota); ?>"
+                                readonly>
                         </div>
                     </div>
                     <hr>
@@ -364,7 +364,9 @@
                             <p class="mb-0">Jumlah Pesan</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="qty" id="qty" required
+                            <input type="text"
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                class="form-control" name="qty" id="qty" required
                                 placeholder="Masukkan Jumlah Pembelian..." onchange="Subtotal()">
                         </div>
                     </div>

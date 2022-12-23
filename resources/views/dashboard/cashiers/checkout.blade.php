@@ -330,8 +330,8 @@
             <div class="card-body">
                 <form method="post" action="/dashboard/cashiers/finishing">
                     @csrf
-                    <input type="hidden" class="form-control" name="id" required placeholder="Masukkan Nama Kategori..."
-                        value="{{ $transaction->id }}" readonly>
+                    <input type="hidden" class="form-control" name="id" required
+                        placeholder="Masukkan Nama Kategori..." value="{{ $transaction->id }}" readonly>
 
                     <div class="row">
                         <div class="col-sm-3">
@@ -359,8 +359,8 @@
                         </div>
                         <div class="col-sm-9">
 
-                            <input type="text" class="form-control" required
-                                placeholder="" value="{{ $transaction->user->nama }}" readonly>
+                            <input type="text" class="form-control" required placeholder=""
+                                value="{{ $transaction->user->nama }}" readonly>
 
                         </div>
                     </div>
@@ -404,8 +404,10 @@
                             <p class="mb-0">Bayar (Apabila Belum Bayar kosongkan)</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="bayar" name="bayar"
-                                placeholder="Masukkan Jumlah..." value="{{ $total_harga }}" onchange="Kembalian()">
+                            <input type="text"
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                class="form-control" id="bayar" name="bayar" placeholder="Masukkan Jumlah..."
+                                value="{{ $total_harga }}" onchange="Kembalian()">
                         </div>
                     </div>
                     <hr>

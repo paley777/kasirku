@@ -423,8 +423,9 @@
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="bayar" name="bayar"
-                                placeholder="Masukkan Nama Pembeli..." value="<?php echo e($transaction->bayar); ?>"
-                                onchange="Kembalian()">
+                                placeholder="Masukkan Bayar..."
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                value="<?php echo e($transaction->bayar); ?>" onchange="Kembalian()">
                         </div>
                     </div>
                     <hr>
@@ -434,7 +435,7 @@
                         </div>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="kembalian" name="kembalian"
-                                placeholder="Masukkan Nama Pembeli..." value="<?php echo e($transaction->kembalian); ?>" readonly>
+                                placeholder="Masukkan.." value="<?php echo e($transaction->kembalian); ?>" readonly>
                         </div>
                     </div>
                     <hr>

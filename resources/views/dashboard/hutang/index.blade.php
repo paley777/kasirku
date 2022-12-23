@@ -1,6 +1,6 @@
+@extends('dashboard.layouts.main')
 
-
-<?php $__env->startSection('container'); ?>
+@section('container')
     <style>
         .card-margin {
             margin-bottom: 1.875rem;
@@ -313,87 +313,40 @@
         }
     </style>
     <div class="container mt-3">
-        <?php if(session()->has('success')): ?>
+        @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?php echo e(session('success')); ?>
-
+                {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        <?php endif; ?>
+        @endif
         <div class="card">
             <div class="row">
                 <div class="col-3">
                     <div class="card-header">
-                        Input Data Pesanan
+                        Cari Hutang Pelanggan
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <form method="post" action="/dashboard/cashier/storeorder">
-                    <?php echo csrf_field(); ?>
+                <form method="post" action="/dashboard/hutangcheck">
+                    @csrf
                     <div class="row">
                         <div class="col-sm-3">
-                            <p class="mb-0">No Nota</p>
+                            <p class="mb-0">Nama Pelanggan</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="no_nota" required value="<?php echo e($no_nota); ?>"
-                                readonly>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Pesan Barang</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="goods" name="good_id">
-                                <?php $__currentLoopData = $goods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $good): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option price="<?php echo e($good->harga); ?>" value="<?php echo e($good->id); ?>" selected>
-                                        <?php $nama = $good->nama;
-                                        echo $nama; ?> | Ada
-                                        :<?php echo e($good->stok); ?> | Harga <?php echo e($good->harga); ?>
-
+                            <select class="form-select" name="customer_id">
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->nama }}">{{ $customer->nama }}
                                     </option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Jumlah Pesan</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text"
-                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                class="form-control" name="qty" id="qty" required
-                                placeholder="Masukkan Jumlah Pembelian..." onchange="Subtotal()">
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Subtotal</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="subtotal" name="subtotal" required readonly>
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn btn-primary" type="submit">Tambahkan Pesanan</button>
+                    <button class="btn btn-primary" type="submit">Cek Hutang</button>
                 </form>
             </div>
         </div>
     </div>
-    <script>
-        function Subtotal() {
-            var databarang = document.querySelector("#goods");
-            var harga = databarang.options[databarang.selectedIndex].getAttribute('price');
-            var qty = document.querySelector("#qty").value;
-            var hasil = harga * qty;
-            document.getElementById("subtotal").value = hasil;
-        }
-    </script>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('dashboard.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\kasirku\resources\views/dashboard/cashiers/order/create.blade.php ENDPATH**/ ?>
+@endsection

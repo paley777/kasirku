@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HutangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 //Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard/hutang', [HutangController::class, 'index'])->middleware('auth');
+Route::post('/dashboard/hutangcheck', [HutangController::class, 'check'])->middleware('auth');
 Route::resource('/dashboard/goods', GoodController::class)->middleware('auth');
 Route::resource('/dashboard/users', UserController::class)->middleware('auth');
 Route::resource('/dashboard/customers', CustomerController::class)->middleware('auth');

@@ -376,8 +376,9 @@
                             <p class="mb-0">Stok</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="stok" placeholder="Masukkan Stok..."
-                                required>
+                            <input type="text"
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                class="form-control" name="stok" placeholder="Masukkan Stok..." required>
                         </div>
                     </div>
                     <hr>
@@ -386,8 +387,9 @@
                             <p class="mb-0">Harga</p>
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="harga" placeholder="Masukkan Harga..."
-                                required>
+                            <input type="text"
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                class="form-control" name="harga" placeholder="Masukkan Harga..." required>
                         </div>
                     </div>
                     <hr>
