@@ -5,7 +5,7 @@
 # Sistem Manajemen Kasir (KasirKu)
 
 Sistem Manajemen Kasir (KasirKu) adalah sistem berbasis website
-dengan Framework Laravel 8. SIPerpus berfungsi untuk mempermudah
+dengan Framework Laravel 8. KasirKu berfungsi untuk mempermudah
 manajemen kasir. Sistem ini mengambil kasus salah satu toko ritel bangunan di Bengkulu.
 
 
