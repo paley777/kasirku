@@ -18,20 +18,16 @@ use Nette\Schema\Schema;
 final class AnyOf implements Schema
 {
 	use Base;
-	use Nette\SmartObject;
 
-	/** @var array */
-	private $set;
+	private array $set;
 
 
-	/**
-	 * @param  mixed|Schema  ...$set
-	 */
-	public function __construct(...$set)
+	public function __construct(mixed ...$set)
 	{
 		if (!$set) {
 			throw new Nette\InvalidStateException('The enumeration must not be empty.');
 		}
+
 		$this->set = $set;
 	}
 
@@ -60,23 +56,33 @@ final class AnyOf implements Schema
 	/********************* processing ****************d*g**/
 
 
-	public function normalize($value, Context $context)
+	public function normalize(mixed $value, Context $context): mixed
 	{
 		return $this->doNormalize($value, $context);
 	}
 
 
-	public function merge($value, $base)
+	public function merge(mixed $value, mixed $base): mixed
 	{
-		if (is_array($value) && isset($value[Helpers::PREVENT_MERGING])) {
-			unset($value[Helpers::PREVENT_MERGING]);
+		if (is_array($value) && isset($value[Helpers::PreventMerging])) {
+			unset($value[Helpers::PreventMerging]);
 			return $value;
 		}
+
 		return Helpers::merge($value, $base);
 	}
 
 
-	public function complete($value, Context $context)
+	public function complete(mixed $value, Context $context): mixed
+	{
+		$isOk = $context->createChecker();
+		$value = $this->findAlternative($value, $context);
+		$isOk() && $value = $this->doTransform($value, $context);
+		return $isOk() ? $value : null;
+	}
+
+
+	private function findAlternative(mixed $value, Context $context): mixed
 	{
 		$expecteds = $innerErrors = [];
 		foreach ($this->set as $item) {
@@ -86,8 +92,9 @@ final class AnyOf implements Schema
 				$res = $item->complete($item->normalize($value, $dolly), $dolly);
 				if (!$dolly->errors) {
 					$context->warnings = array_merge($context->warnings, $dolly->warnings);
-					return $this->doFinalize($res, $context);
+					return $res;
 				}
+
 				foreach ($dolly->errors as $error) {
 					if ($error->path !== $context->path || empty($error->variables['expected'])) {
 						$innerErrors[] = $error;
@@ -97,8 +104,9 @@ final class AnyOf implements Schema
 				}
 			} else {
 				if ($item === $value) {
-					return $this->doFinalize($value, $context);
+					return $value;
 				}
+
 				$expecteds[] = Nette\Schema\Helpers::formatValue($item);
 			}
 		}
@@ -108,28 +116,32 @@ final class AnyOf implements Schema
 		} else {
 			$context->addError(
 				'The %label% %path% expects to be %expected%, %value% given.',
-				Nette\Schema\Message::TYPE_MISMATCH,
+				Nette\Schema\Message::TypeMismatch,
 				[
 					'value' => $value,
 					'expected' => implode('|', array_unique($expecteds)),
-				]
+				],
 			);
 		}
+
+		return null;
 	}
 
 
-	public function completeDefault(Context $context)
+	public function completeDefault(Context $context): mixed
 	{
 		if ($this->required) {
 			$context->addError(
 				'The mandatory item %path% is missing.',
-				Nette\Schema\Message::MISSING_ITEM
+				Nette\Schema\Message::MissingItem,
 			);
 			return null;
 		}
+
 		if ($this->default instanceof Schema) {
 			return $this->default->completeDefault($context);
 		}
+
 		return $this->default;
 	}
 }

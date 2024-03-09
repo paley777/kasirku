@@ -106,7 +106,7 @@ class ArgumentMetadata
      *
      * @return array<object>
      */
-    public function getAttributes(string $name = null, int $flags = 0): array
+    public function getAttributes(?string $name = null, int $flags = 0): array
     {
         if (!$name) {
             return $this->attributes;
@@ -134,7 +134,7 @@ class ArgumentMetadata
             }
         } else {
             foreach ($this->attributes as $attribute) {
-                if (\get_class($attribute) === $name) {
+                if ($attribute::class === $name) {
                     $attributes[] = $attribute;
                 }
             }

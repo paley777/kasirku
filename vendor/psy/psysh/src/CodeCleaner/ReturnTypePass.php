@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +18,7 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Return_;
+use PhpParser\Node\UnionType;
 use Psy\Exception\FatalErrorException;
 
 /**
@@ -31,23 +32,15 @@ class ReturnTypePass extends CodeCleanerPass
     const VOID_NULL_MESSAGE = 'A void function must not return a value (did you mean "return;" instead of "return null;"?)';
     const NULLABLE_VOID_MESSAGE = 'Void type cannot be nullable';
 
-    private $atLeastPhp71;
     private $returnTypeStack = [];
-
-    public function __construct()
-    {
-        $this->atLeastPhp71 = \version_compare(\PHP_VERSION, '7.1', '>=');
-    }
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|Node|null Replacement node (or special return value)
      */
     public function enterNode(Node $node)
     {
-        if (!$this->atLeastPhp71) {
-            return; // @codeCoverageIgnore
-        }
-
         if ($this->isFunctionNode($node)) {
             $this->returnTypeStack[] = $node->returnType;
 
@@ -79,20 +72,18 @@ class ReturnTypePass extends CodeCleanerPass
             }
 
             if ($msg !== null) {
-                throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getLine());
+                throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getStartLine());
             }
         }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|Node|Node[]|null Replacement node (or special return value)
      */
     public function leaveNode(Node $node)
     {
-        if (!$this->atLeastPhp71) {
-            return; // @codeCoverageIgnore
-        }
-
         if (!empty($this->returnTypeStack) && $this->isFunctionNode($node)) {
             \array_pop($this->returnTypeStack);
         }
@@ -105,6 +96,10 @@ class ReturnTypePass extends CodeCleanerPass
 
     private function typeName(Node $node): string
     {
+        if ($node instanceof UnionType) {
+            return \implode('|', \array_map([$this, 'typeName'], $node->types));
+        }
+
         if ($node instanceof NullableType) {
             return \strtolower($node->type->name);
         }

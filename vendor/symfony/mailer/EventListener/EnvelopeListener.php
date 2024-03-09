@@ -33,7 +33,7 @@ class EnvelopeListener implements EventSubscriberInterface
     /**
      * @param array<Address|string> $recipients
      */
-    public function __construct(Address|string $sender = null, array $recipients = null)
+    public function __construct(Address|string|null $sender = null, ?array $recipients = null)
     {
         if (null !== $sender) {
             $this->sender = Address::create($sender);
@@ -51,7 +51,7 @@ class EnvelopeListener implements EventSubscriberInterface
             $message = $event->getMessage();
             if ($message instanceof Message) {
                 if (!$message->getHeaders()->has('Sender') && !$message->getHeaders()->has('From')) {
-                    $message->getHeaders()->addMailboxHeader('Sender', $this->sender->getAddress());
+                    $message->getHeaders()->addMailboxHeader('Sender', $this->sender);
                 }
             }
         }

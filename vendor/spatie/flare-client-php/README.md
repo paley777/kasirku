@@ -1,6 +1,3 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 # Send PHP errors to Flare
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/flare-client-php.svg?style=flat-square)](https://packagist.org/packages/spatie/flare-client-php)
@@ -16,7 +13,7 @@ Using Laravel? You probably want to use [Ignition for Laravel](https://github.co
 
 ## Documentation
 
-You can find the documentation of this package at [the docs of Flare](https://flareapp.io/docs/general/projects).
+You can find the documentation of this package at [the docs of Flare](https://flareapp.io/docs/flare/general/welcome-to-flare).
 
 ## Changelog
 

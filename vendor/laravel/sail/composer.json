@@ -14,10 +14,11 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
-        "illuminate/contracts": "^8.0|^9.0",
-        "illuminate/console": "^8.0|^9.0",
-        "illuminate/support": "^8.0|^9.0"
+        "php": "^8.0",
+        "illuminate/console": "^9.52.16|^10.0|^11.0",
+        "illuminate/contracts": "^9.52.16|^10.0|^11.0",
+        "illuminate/support": "^9.52.16|^10.0|^11.0",
+        "symfony/yaml": "^6.0|^7.0"
     },
     "bin": [
         "bin/sail"
@@ -28,9 +29,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        },
         "laravel": {
             "providers": [
                 "Laravel\\Sail\\SailServiceProvider"
@@ -41,5 +39,9 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^7.0|^8.0|^9.0",
+        "phpstan/phpstan": "^1.10"
+    }
 }

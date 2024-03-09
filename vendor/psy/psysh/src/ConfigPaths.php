@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -34,7 +34,8 @@ class ConfigPaths
     public function __construct(array $overrides = [], EnvInterface $env = null)
     {
         $this->overrideDirs($overrides);
-        $this->env = $env ?: new SuperglobalsEnv();
+
+        $this->env = $env ?: (\PHP_SAPI === 'cli-server' ? new SystemEnv() : new SuperglobalsEnv());
     }
 
     /**
@@ -120,32 +121,6 @@ class ConfigPaths
     }
 
     /**
-     * @deprecated
-     */
-    public static function getConfigDirs(): array
-    {
-        return (new self())->configDirs();
-    }
-
-    /**
-     * Get potential home config directory paths.
-     *
-     * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and the
-     * XDG Base Directory home config directory:
-     *
-     *     http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
-     *
-     * @deprecated
-     *
-     * @return string[]
-     */
-    public static function getHomeConfigDirs(): array
-    {
-        // Not quite the same, but this is deprecated anyway /shrug
-        return self::getConfigDirs();
-    }
-
-    /**
      * Get the current home config directory.
      *
      * Returns the highest precedence home config directory which actually
@@ -154,8 +129,6 @@ class ConfigPaths
      * everywhere else).
      *
      * @see self::homeConfigDir
-     *
-     * @return string
      */
     public function currentConfigDir(): string
     {
@@ -175,14 +148,6 @@ class ConfigPaths
     }
 
     /**
-     * @deprecated
-     */
-    public static function getCurrentConfigDir(): string
-    {
-        return (new self())->currentConfigDir();
-    }
-
-    /**
      * Find real config files in config directories.
      *
      * @param string[] $names Config file names
@@ -192,14 +157,6 @@ class ConfigPaths
     public function configFiles(array $names): array
     {
         return $this->allRealFiles($this->configDirs(), $names);
-    }
-
-    /**
-     * @deprecated
-     */
-    public static function getConfigFiles(array $names, $configDir = null): array
-    {
-        return (new self(['configDir' => $configDir]))->configFiles($names);
     }
 
     /**
@@ -227,14 +184,6 @@ class ConfigPaths
     }
 
     /**
-     * @deprecated
-     */
-    public static function getDataDirs(): array
-    {
-        return (new self())->dataDirs();
-    }
-
-    /**
      * Find real data files in config directories.
      *
      * @param string[] $names Config file names
@@ -247,19 +196,9 @@ class ConfigPaths
     }
 
     /**
-     * @deprecated
-     */
-    public static function getDataFiles(array $names, $dataDir = null): array
-    {
-        return (new self(['dataDir' => $dataDir]))->dataFiles($names);
-    }
-
-    /**
      * Get a runtime directory.
      *
      * Defaults to `/psysh` inside the system's temp dir.
-     *
-     * @return string
      */
     public function runtimeDir(): string
     {
@@ -274,11 +213,37 @@ class ConfigPaths
     }
 
     /**
-     * @deprecated
+     * Get a list of directories in PATH.
+     *
+     * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
+     *
+     * @return string[]
      */
-    public static function getRuntimeDir(): string
+    public function pathDirs(): array
     {
-        return (new self())->runtimeDir();
+        return $this->getEnvArray('PATH') ?: ['/usr/sbin', '/usr/bin', '/sbin', '/bin'];
+    }
+
+    /**
+     * Locate a command (an executable) in $PATH.
+     *
+     * Behaves like 'command -v COMMAND' or 'which COMMAND'.
+     * If $PATH is unset/empty it defaults to '/usr/sbin:/usr/bin:/sbin:/bin'.
+     *
+     * @param string $command the executable to locate
+     *
+     * @return string
+     */
+    public function which($command)
+    {
+        foreach ($this->pathDirs() as $path) {
+            $fullpath = $path.\DIRECTORY_SEPARATOR.$command;
+            if (@\is_file($fullpath) && @\is_executable($fullpath)) {
+                return $fullpath;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -405,7 +370,7 @@ class ConfigPaths
     private function getEnvArray($key)
     {
         if ($value = $this->getEnv($key)) {
-            return \explode(':', $value);
+            return \explode(\PATH_SEPARATOR, $value);
         }
 
         return null;

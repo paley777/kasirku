@@ -75,7 +75,7 @@ class Protocol extends ProtocolNode
     public static function getInstance(): self
     {
         if (null === static::$_instance) {
-            static::$_instance = new static();
+            static::$_instance = new self();
         }
 
         return static::$_instance;
@@ -87,7 +87,7 @@ class Protocol extends ProtocolNode
     protected function initialize()
     {
         $root = \dirname(__DIR__, 3);
-        $argv0 = \realpath($_SERVER['argv'][0]);
+        $argv0 = isset($_SERVER['argv'][0]) ? \realpath($_SERVER['argv'][0]) : false;
 
         $cwd =
             'cli' === \PHP_SAPI

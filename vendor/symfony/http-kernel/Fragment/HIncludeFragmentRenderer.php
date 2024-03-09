@@ -13,8 +13,8 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Symfony\Component\HttpKernel\UriSigner;
 use Twig\Environment;
 
 /**
@@ -30,9 +30,9 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
     private string $charset;
 
     /**
-     * @param string $globalDefaultTemplate The global default content (it can be a template name or the content)
+     * @param string|null $globalDefaultTemplate The global default content (it can be a template name or the content)
      */
-    public function __construct(Environment $twig = null, UriSigner $signer = null, string $globalDefaultTemplate = null, string $charset = 'utf-8')
+    public function __construct(?Environment $twig = null, ?UriSigner $signer = null, ?string $globalDefaultTemplate = null, string $charset = 'utf-8')
     {
         $this->twig = $twig;
         $this->globalDefaultTemplate = $globalDefaultTemplate;
@@ -49,8 +49,6 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Additional available options:
      *
      *  * default:    The default content (it can be a template name or the content)
@@ -92,9 +90,6 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
         return new Response(sprintf('<hx:include src="%s"%s>%s</hx:include>', $uri, $renderedAttributes, $content));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'hinclude';

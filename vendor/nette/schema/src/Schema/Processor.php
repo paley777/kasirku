@@ -17,19 +17,12 @@ use Nette;
  */
 final class Processor
 {
-	use Nette\SmartObject;
-
-	/** @var array */
-	public $onNewContext = [];
-
-	/** @var Context|null */
-	private $context;
-
-	/** @var bool */
-	private $skipDefaults;
+	public array $onNewContext = [];
+	private Context $context;
+	private bool $skipDefaults = false;
 
 
-	public function skipDefaults(bool $value = true)
+	public function skipDefaults(bool $value = true): void
 	{
 		$this->skipDefaults = $value;
 	}
@@ -37,10 +30,9 @@ final class Processor
 
 	/**
 	 * Normalizes and validates data. Result is a clean completed data.
-	 * @return mixed
 	 * @throws ValidationException
 	 */
-	public function process(Schema $schema, $data)
+	public function process(Schema $schema, mixed $data): mixed
 	{
 		$this->createContext();
 		$data = $schema->normalize($data, $this->context);
@@ -53,10 +45,9 @@ final class Processor
 
 	/**
 	 * Normalizes and validates and merges multiple data. Result is a clean completed data.
-	 * @return mixed
 	 * @throws ValidationException
 	 */
-	public function processMultiple(Schema $schema, array $dataset)
+	public function processMultiple(Schema $schema, array $dataset): mixed
 	{
 		$this->createContext();
 		$flatten = null;
@@ -67,6 +58,7 @@ final class Processor
 			$flatten = $first ? $data : $schema->merge($data, $flatten);
 			$first = false;
 		}
+
 		$data = $schema->complete($flatten, $this->context);
 		$this->throwsErrors();
 		return $data;
@@ -82,6 +74,7 @@ final class Processor
 		foreach ($this->context->warnings as $message) {
 			$res[] = $message->toString();
 		}
+
 		return $res;
 	}
 
@@ -94,10 +87,10 @@ final class Processor
 	}
 
 
-	private function createContext()
+	private function createContext(): void
 	{
 		$this->context = new Context;
 		$this->context->skipDefaults = $this->skipDefaults;
-		$this->onNewContext($this->context);
+		Nette\Utils\Arrays::invoke($this->onNewContext, $this->context);
 	}
 }
