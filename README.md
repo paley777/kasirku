@@ -2,44 +2,44 @@
 ![Logo](https://i.ibb.co/7v5GWr2/Screenshot-2022-06-18-010901.png)
 
 
-# Sistem Manajemen Kasir (KasirKu)
+# Cashier Management System (KasirKu)
 
-Sistem Manajemen Kasir (KasirKu) adalah sistem berbasis website
-dengan Framework Laravel 8. KasirKu berfungsi untuk mempermudah
-manajemen kasir. Sistem ini mengambil kasus salah satu toko ritel bangunan di Bengkulu.
-
-
-
-## Integrasi
-Sistem ini selain menggunakan Laravel 8. Juga mengintegrasikan Framework
-Bootstrap sebagai front-end. Sistem ini menggunakan database SQL dan dalam 
-pengembangannya menggunakan software MySQL Workbench.
-
-
-## Fitur Pengguna
-
-- Manajemen Olah Data
-- Manajemen Kasir
-- Manajemen Rekapitulasi
+The Cashier Management System (KasirKu) is a website-based system
+with the Laravel 8 Framework. KasirKu functions to make things easier
+cashier management. This system takes the case of one of the building retail stores in Bengkulu.
 
 
 
+## Integration
+Apart from using Laravel 8, this system also integrates the Framework
+Bootstrap as front-end. This system uses SQL database and in 
+The development uses MySQL Workbench software.
 
 
-## Fitur Sistem
+## User Features
+
+- Data Processing Management
+- Cashier Management
+- Recapitulation Management
+
+
+
+
+
+## System Features
 
 - Laravel 8
 - Using Eloquent from Laravel
-- Templating for header and footer
-- Full CRUD Integrating
+- Templates for headers and footers
+- Full CRUD integration
 - Authentication from Laravel
-- Paginations
+- Pagination
 - Search Data
 - Automatic Cashier Logic
-- Automatic Transaction Note
+- Automatic Transaction Notes
 - Export PDF
-
-## Optimalisasi
+- 
+## Optimization
 
 N+1 Problems
 
@@ -95,6 +95,6 @@ Start the server
 ![App Screenshot](https://i.ibb.co/ZY8bYMG/Screenshot-2022-06-18-011302.png)
 
 
-## Saran
+## Suggestion
 
-Untuk saran dan masukan sistem ini harap berkenan email ke valleryan1212@gmail.com
+For suggestions and input on this system, please email valleryan1212@gmail.com
